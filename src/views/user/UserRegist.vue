@@ -154,7 +154,7 @@
                         <p class="c_tit">가입이 완료되었습니다.<br>로그인 화면으로 이동합니다.</p>               
                     </div>
                 </div>
-                <button class="btn_m01 blue">확인</button>
+                <button class="btn_m01 blue" @click="goLogin">확인</button>
                 <div class="popup_close">닫기</div>
             </div>
 			<!-- 팝업 끝-->
@@ -174,6 +174,7 @@
 	</div><!-- //contentWrap -->
 </template>
 <script>
+import { userReg } from "@/api/user";
 export default {
     data() {
 		return {
@@ -197,16 +198,22 @@ export default {
                 userPassword :"",
                 userNm:"",
                 emailAdres:"",
-                userMbtlnum:""
+                userMbtlnum: ""
             },
 		}
 	},
 	created() {
 	},
 	methods: {
+        //로그인 화면 이동
+        goLogin(){
+            this.$router.push({
+				path: "/user/Login",
+			});
+        },
         /* 아이디 체크 */
         idCheck(){
-
+            //id 중복체크 추가하기
         },
         /*패스워드 체크*/
         pwCheck(){
@@ -219,7 +226,7 @@ export default {
             }
         },
         /* 저장*/
-        getInsert() {
+        getRegist() {
         //validate
         if(this.inputParam.devlopGuideSj == "" 
         || this.inputParam.devlopGuideVerValue == "" 
@@ -227,12 +234,15 @@ export default {
             this.validModal = true;
             return false;
         }
+
+        //전화번호 저장해주기
+        this.inputParam.userMbtlnum = this.mobile1+"-"+this.mobile2+"-"+this.mobile3
         userReg(this.inputParam)
             .then(response => {
                 console.log("code : ", response.data.code);
                 if (response.data.code == 200) {
-                    insSn = response.data.NewDevlopGuideSn;
-                    this.regModal=true;
+                    //insSn = response.data.NewDevlopGuideSn;
+                    this.regShow=true;
                 } else {
                 alert("등록 실패하였습니다");
                 }

@@ -5,7 +5,7 @@ import axios from 'axios';
 export function login(params){
     return axios({
         url: 'http://localhost:8888/api/user/login',
-        method : 'post',
+        method : 'get',
         data : params
     });
 }
@@ -18,6 +18,16 @@ export function logout(token){
         data : token
     })
 }
+
+//회원가입
+export function userReg(params){
+    return axios({
+        url : 'http://localhost:8888/api/user/join',
+        method : 'post',
+        data : params
+    })
+}
+
 
 
 
