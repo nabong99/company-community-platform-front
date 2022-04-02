@@ -19,14 +19,14 @@
 						<div class="login_inp id">
 							<label for="inp_id">아이디</label>
 							<span class="input_txt">
-								<input type="text" id="inp_id" class="ime_en" v-model="username">
+								<input type="text" id="inp_id" class="ime_en" v-model="userParams.userId">
 							</span>
 						</div>
 
 						<div class="login_inp">
 							<label for="inp_pw">패스워드</label>
 							<span class="input_txt">
-								<input type="password" id="inp_pw" v-model="password">
+								<input type="password" id="inp_pw" v-model="userParams.userPassword">
 							</span>
 						</div>
 											
@@ -55,27 +55,54 @@
 
 <script>
 import {mapActions, mapState} from 'vuex'
-
+import {login} from "@/api/user"
 const userStore = 'userStore';
 
 export default {
 	name : "LoginPage",
 	data(){
 		return{
-				username : '',
-				password : ''
+				// userId : '',
+				// userPassword : ''
+				userParams : {
+					userId : '',
+				    userPassword : ''
+				},
 		}
 	},
 	
 
 	methods :{
-		...mapActions(userStore, ['login', 'getInfo']),
+		//...mapActions(userStore, ['login', 'getInfo']),
 		doLogin() {
 			const userInfo = {
-				username : this.username,
-				password : this.password
+				userId : this.userId,
+				userPassword : this.userPassword
 			}
-			this.login(userInfo)
+			//this.login(userInfo)
+			login(this.userParams)
+			.then(response => {
+				console.log("response.data.devInquryRegist", response.data.result);
+				alert(response.data.result);
+				if(response.data.result=="200"){
+					alert("로그인 되었습니다.");
+				}else if(response.data.result=="worng_password"){
+					alert("비밀번호가 올바르지 않습니다.");
+				}else if(response.data.result=="no_id"){
+					alert("아이디를 찾을 수 없습니다.");
+				}
+
+				
+				
+				//alert("inqury >>"+response.data.vo.resultSn);
+				
+				//this.goView(response.data.resultSn);
+			}).catch(error => {
+				alert("로그인이 실패하였습니다.\r\n관리자에게 문의하여주시기 바랍니다.");
+				alert(this.userParams.userId);
+				alert(this.userParams.userPassword);
+				
+			});
 		},
 		signUp(){
 			this.$router.push({

@@ -4,9 +4,12 @@ import axios from 'axios';
 //object형태로 옴
 export function login(params){
     return axios({
-        url: 'http://localhost:8888/api/user/login',
-        method : 'get',
-        data : params
+        url: '/api/user/login',
+        //url: '/login',
+        method : 'post',
+        data : params,
+        //contentType: 'application/json'
+        contentType: 'application/x-www-form-urlencoded'
     });
 }
 
@@ -19,7 +22,7 @@ export function logout(token){
     })
 }
 
-//회원가입
+//회원가입 03.30
 export function userReg(params){
     return axios({
         url : 'http://localhost:8888/api/user/join',
